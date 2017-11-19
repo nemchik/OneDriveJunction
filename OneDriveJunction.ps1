@@ -9,7 +9,6 @@ $junctionFolders = @(
   "Pictures",
   "Saved Games",
   "Searches",
-  "fake",
   "Videos"
 );
 
