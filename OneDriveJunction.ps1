@@ -1,14 +1,9 @@
 $junctionFolders = @(
-  "Contacts",
   "Desktop",
   "Documents",
   "Downloads",
-  "Favorites", #broken
-  "Links",
   "Music",
   "Pictures",
-  "Saved Games",
-  "Searches",
   "Videos"
 );
 
