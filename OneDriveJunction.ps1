@@ -8,15 +8,13 @@ $junctionFolders = @(
 );
 
 foreach ($folder in $junctionFolders) {
-  $originalPath = (Get-Item "$env:USERPROFILE\$folder").FullName;
-  $oneDrivePath = (Get-Item "$env:OneDrive\$folder").FullName;
-  if (((Test-Path $originalPath) -ne $True) -or ((Get-Item $originalPath).Attributes.ToString().Contains("ReparsePoint") -ne $True)) {
-    New-Item $oneDrivePath -Type Directory -Force -ErrorAction SilentlyContinue;
-    Move-Item -Path "$($originalPath)\*" -Destination $oneDrivePath -Force -ErrorAction SilentlyContinue;
+  if (((Test-Path "$env:USERPROFILE\$folder") -ne $True) -or ((Get-Item "$env:USERPROFILE\$folder").Attributes.ToString().Contains("ReparsePoint") -ne $True)) {
+    New-Item "$env:OneDrive\$folder" -Type Directory -Force -ErrorAction SilentlyContinue;
+    Move-Item -Path "$env:USERPROFILE\$folder\*" -Destination "$env:OneDrive\$folder" -Force -ErrorAction SilentlyContinue;
     ## Potentially find a way to check if the folder is in use before removing it.
-    # Get-Process | Where-Object { $_.Modules.FileName -icontains $originalPath } | Stop-Process;
+    # Get-Process | Where-Object { $_.Modules.FileName -icontains "$env:USERPROFILE\$folder" } | Stop-Process;
     ## Remove the original folder.
-    # Remove-Item $originalPath -Recurse -Force -ErrorAction SilentlyContinue;
-    New-Item -ItemType Junction -Path $originalPath -Value $oneDrivePath -Force -ErrorAction SilentlyContinue;
+    # Remove-Item "$env:USERPROFILE\$folder" -Recurse -Force -ErrorAction SilentlyContinue;
+    New-Item -ItemType Junction -Path "$env:USERPROFILE\$folder" -Value "$env:OneDrive\$folder" -Force -ErrorAction SilentlyContinue;
   }
 }
